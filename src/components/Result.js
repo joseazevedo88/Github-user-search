@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import Image from "../elements/Image";
 import Link from "../elements/Link";
 import styled from "styled-components";
@@ -8,15 +8,15 @@ import { colorStyle } from "styled-system";
 const UserContainer = styled.div`
   display: flex;
   background-color: ${props =>
-      props.highlight ? "white !important" : "none !important"}
-    ${colorStyle};
+    props.highlight ? "white !important" : "none !important"};
+  ${colorStyle};
 `;
 
 const UserStyle = styled.p`
   position: relative;
   margin-left: 1rem;
   padding-top: 0.5rem;
-  color: ${props => (props.highlight ? "grey" : "white")};
+  color: ${props => (props.highlight ? "black" : "white")};
 `;
 
 const ImageContainer = styled.div`
@@ -28,46 +28,34 @@ const UserHandler = styled.div`
   border-bottom: ${props => (props.highlight ? "none" : "1px solid #e8e8e8;")};
 `;
 
-export class Result extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      active: 0
-    };
-  }
+export default function Result(props) {
+  useEffect(() => {
+    props.url(props.result.html_url);
+  }, []);
 
-  componentDidMount() {
-    this.props.url(this.props.result.html_url);
-  }
+  const { avatar_url, login } = props.result;
 
-  render() {
-    console.log(this.props.color);
-    const { avatar_url, login } = this.props.result;
-    //const githubUrl = `https://www.github.com/${login}`;
-    return (
-      <Link onClick={this.props.toggle}>
-        <UserContainer
-          colors={this.props.color}
-          highlight={this.props.active === this.props.index}
-        >
-          <ImageContainer>
-            <Image
-              src={avatar_url}
-              borderRadius={50}
-              maxHeight={50}
-              maxWidth={50}
-            />
-          </ImageContainer>
-          <UserHandler highlight={this.props.active === this.props.index}>
-            <UserStyle highlight={this.props.active === this.props.index}>
-              {login}
-              <SvgHeart />
-            </UserStyle>
-          </UserHandler>
-        </UserContainer>
-      </Link>
-    );
-  }
+  return (
+    <Link onClick={props.toggle}>
+      <UserContainer
+        colors={props.color}
+        highlight={props.active === props.index}
+      >
+        <ImageContainer>
+          <Image
+            src={avatar_url}
+            borderRadius={50}
+            maxHeight={50}
+            maxWidth={50}
+          />
+        </ImageContainer>
+        <UserHandler highlight={props.active === props.index}>
+          <UserStyle highlight={props.active === props.index}>
+            {login}
+            <SvgHeart />
+          </UserStyle>
+        </UserHandler>
+      </UserContainer>
+    </Link>
+  );
 }
-
-export default Result;

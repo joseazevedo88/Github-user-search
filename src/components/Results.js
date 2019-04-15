@@ -1,5 +1,5 @@
 import React from "react";
-import { Result } from "./Result";
+import Result from "./Result";
 
 export default function Results(props) {
   //const newResults = this.props.results.slice(0, 9);
